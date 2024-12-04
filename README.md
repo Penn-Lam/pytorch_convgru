@@ -1,4 +1,4 @@
-# Convolutional Gated Recurrent Unit (ConvGRU) in PyTorch
+# Convolutional Gated Recurrent Unit (ConvGRU) in Mindspore
 
 These modules implement an individual `ConvGRUCell` and the corresponding multi-cell `ConvGRU` wrapper in [PyTorch](https://pytorch.org).
 
