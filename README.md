@@ -1,6 +1,6 @@
-# Convolutional Gated Recurrent Unit (ConvGRU) in PyTorch
+# Convolutional Gated Recurrent Unit (ConvGRU) in Pytorch
 
-These modules implement an individual `ConvGRUCell` and the corresponding multi-cell `ConvGRU` wrapper in [PyTorch](https://pytorch.org).
+ 
 
 The ConvGRU is implemented as described in [Ballas *et. al.* 2015: Delving Deeper into Convolutional Networks for Learning Video Representations](https://arxiv.org/abs/1511.06432).
 
