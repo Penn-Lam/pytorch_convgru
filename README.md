@@ -1,32 +1,62 @@
-# Convolutional Gated Recurrent Unit (ConvGRU) in Pytorch
+# Convolutional Gated Recurrent Unit (ConvGRU) Implementation
 
- 
+This repository provides implementations of the Convolutional Gated Recurrent Unit (ConvGRU) in both PyTorch and MindSpore frameworks. The ConvGRU is implemented as described in [Ballas *et. al.* 2015: Delving Deeper into Convolutional Networks for Learning Video Representations](https://arxiv.org/abs/1511.06432).
 
-The ConvGRU is implemented as described in [Ballas *et. al.* 2015: Delving Deeper into Convolutional Networks for Learning Video Representations](https://arxiv.org/abs/1511.06432).
+## Implementations
 
-The `ConvGRUCell` was largely borrowed from [@halochou](https://github.com/halochou). The `ConvGRU` wrapper is based on the [PyTorch RNN source](http://pytorch.org/docs/master/_modules/torch/nn/modules/rnn.html#RNN).
+### PyTorch Implementation
+The original implementation in PyTorch includes:
+- `convgru.py`: Contains the PyTorch implementation of `ConvGRUCell` and `ConvGRU`
+- `convgru_model.py`: Example usage of the PyTorch implementation
 
-# Usage
+### MindSpore Implementation
+The MindSpore implementation (based on the PyTorch version) includes:
+- `mindspore_convgru.py`: Contains the MindSpore implementation of `ConvGRUCell` and `ConvGRU`
+- `mindspore_convgru_model.py`: Example usage of the MindSpore implementation
 
-```python
+## Requirements
+- For PyTorch version: PyTorch
+- For MindSpore version: MindSpore 2.3.0
 
-from convgru import ConvGRU
-
-# Generate a ConvGRU with 3 cells
-# input_size and hidden_sizes reflect feature map depths.
-# Height and Width are preserved by zero padding within the module.
-model = ConvGRU(input_size=8, hidden_sizes=[32,64,16],
-                  kernel_sizes=[3, 5, 3], n_layers=3)
-
-x = Variable(torch.FloatTensor(1,8,64,64))
-output = model(x)
-
-# output is a list of sequential hidden representation tensors
-print(type(output)) # list
-
-# final output size
-print(output[-1].size()) # torch.Size([1, 16, 64, 64])
+Install MindSpore dependencies:
+```bash
+pip install -r requirements.txt
 ```
+
+## Usage
+
+Both implementations preserve spatial dimensions across cells, only altering depth. The main differences are in the framework-specific syntax and operations.
+
+### PyTorch Example:
+```python
+from convgru import ConvGRU
+import torch
+
+model = ConvGRU(input_size=8, hidden_sizes=[32, 64, 16],
+                kernel_sizes=[3, 5, 3], n_layers=3)
+x = torch.FloatTensor(1, 8, 64, 64)
+output = model(x)
+```
+
+### MindSpore Example:
+```python
+from mindspore_convgru import ConvGRU
+import mindspore as ms
+
+model = ConvGRU(input_size=8, hidden_sizes=[32, 64, 16],
+                kernel_sizes=[3, 5, 3], n_layers=3)
+x = ms.numpy.randn(1, 8, 64, 64)
+output = model(x)
+```
+
+## Key Differences
+- PyTorch uses `forward()` while MindSpore uses `construct()`
+- Different initialization methods (PyTorch's init vs MindSpore's initializers)
+- Framework-specific tensor operations and neural network modules
+- MindSpore requires context setup for execution mode
+
+## Reference
+[Ballas *et. al.* 2015: Delving Deeper into Convolutional Networks for Learning Video Representations](https://arxiv.org/abs/1511.06432)
 
 ## Development
 
