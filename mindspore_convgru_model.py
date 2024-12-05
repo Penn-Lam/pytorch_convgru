@@ -1,3 +1,8 @@
+import warnings
+import numpy.core.fromnumeric
+
+warnings.filterwarnings("ignore", message="The value of the smallest subnormal")
+
 import mindspore as ms
 from mindspore import context
 from mindspore_convgru import ConvGRU
