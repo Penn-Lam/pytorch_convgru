@@ -94,11 +94,17 @@ class ConvGRU(nn.Cell):
         
         self.n_layers = n_layers
         
-        # Create cells as individual attributes
+        cells = []
         for i in range(self.n_layers):
-            input_dim = self.input_size if i == 0 else self.hidden_sizes[i-1]
-            setattr(self, f'cell_{i}', 
-                   ConvGRUCell(input_dim, self.hidden_sizes[i], self.kernel_sizes[i]))
+            if i == 0:
+                input_dim = self.input_size
+            else:
+                input_dim = self.hidden_sizes[i-1]
+                
+            cell = ConvGRUCell(input_dim, self.hidden_sizes[i], self.kernel_sizes[i])
+            cells.append(cell)
+        
+        self.cells = nn.CellList(cells)
 
     def construct(self, x, hidden=None):
         """
@@ -117,9 +123,7 @@ class ConvGRU(nn.Cell):
         input_ = x
         upd_hidden = []
         
-        # Access cells through getattr
-        for layer_idx in range(self.n_layers):
-            cell = getattr(self, f'cell_{layer_idx}')
+        for layer_idx, cell in enumerate(self.cells):
             upd_cell_hidden = cell(input_, hidden[layer_idx])
             upd_hidden.append(upd_cell_hidden)
             input_ = upd_cell_hidden
